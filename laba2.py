@@ -1,20 +1,11 @@
 #Вариант 22. Натуральные числа, начинающиеся с нечетной цифры и содержащие не более 2 четных цифр.
-# Для каждого числа через тире вывести прописью первую цифру и четные цифры. Через регулярные выражения
+#Для каждого числа через тире вывести прописью первую цифру и четные цифры.
+#Исопльзовать re
 import re
 def checkNum(str_num):
-  if "-" in str_num or str_num == "":
-    return False
-  else:
-    if int(str_num[0])%2==0:
-      return False
-    flag = True
-    count = 0
-    for i in range(1, len(str_num)):
-      if int(str_num[i])%2==0:
-        count= count+1
-    if count > 2:
-      return False
-    return flag
+    if re.match("^[02468]+$", str_num[0]): return False
+    if len(str_num) - len(re.sub(r"[24680]", '', str_num)) > 2: return False
+    return True
 
 nums = []
 file_name = "text.txt"
@@ -27,23 +18,10 @@ except:
   print("Файл отсутствует")
 
 with open(file_name, "r") as file:
-  while True:
-    line = file.readline().replace('\n', '')
-    if not(line): break
-    if not re.match(r'^[0-9\s]*$', line): continue
-    num = ""
-    if line.isdigit() and checkNum(line): nums.append(line)
-    else:
-      for index in range(0, len(line)):
-        if line[index].isdigit():
-          num += line[index]
-        if not line[index].isdigit() or index == (len(line) - 1):
-          if checkNum(num): nums.append(num)
-          num = ""
-
-for num in nums:
-  accept_char = []
-  accept_char.append(num[0])
-  for char in num:
-    if int(char) % 2 == 0: accept_char.append(char)
-  print(" - ".join(list(map(lambda x: perev_cifr[x], accept_char))))
+  for line in file.readlines():
+    line = line.replace('\n', '')
+    if not re.match("^[0-9]+$", line): continue
+    if(checkNum(line)):
+        print("Подходящее число : ", line)
+        even = re.sub(r"[13579]", '', line)
+        print(perev_cifr[line[0]], " ; ", *list(map(lambda x: perev_cifr[x], even)), '\n')

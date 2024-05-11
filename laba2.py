@@ -19,4 +19,4 @@ with open(file_name, "r") as file:
     even = re.sub(r"[13579]", '', line)
     if len(even) <= 2 and int(line[0])%2!=0:
         print("Подходящее число : ", line)
-        print(perev_cifr[line[0]], " ; ", *list(map(lambda x: perev_cifr[x], even)), '\n') #Вывод
+        print(perev_cifr[line[0]], " - ", *list(map(lambda x: perev_cifr[x], even)), '\n') #Вывод
